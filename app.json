@@ -14,7 +14,8 @@
       "assets/**/*"
     ],
     "android": {
-      "package": "com.tahfidz.expo"
+      "package": "com.tahfidz.expo",
+      "usesCleartextTraffic": true
     },
     "extra": {
       "eas": {
