@@ -1,32 +1,44 @@
-import React from 'react';
-import { WebView } from 'react-native-webview';
-import { Asset } from 'expo-asset';
-import * as FileSystem from 'expo-file-system';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { WebView } from "react-native-webview";
+import { Asset } from "expo-asset";
+import * as FileSystem from "expo-file-system";
 
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
 
   useEffect(() => {
-    // Ambil file index.html dari assets
     const loadFile = async () => {
-      const asset = Asset.fromModule(require('./assets/web/dist/index.html'));
-      await asset.downloadAsync(); // pastikan file tersedia di device
-      setLocalUri(asset.localUri || asset.uri);
+      try {
+        // ambil file index.html dari assets
+        const asset = Asset.fromModule(require("./assets/web/dist/index.html"));
+        await asset.downloadAsync();
+
+        // copy ke cache biar bisa diakses WebView
+        const fileUri = `${FileSystem.cacheDirectory}index.html`;
+        await FileSystem.writeAsStringAsync(
+          fileUri,
+          await FileSystem.readAsStringAsync(asset.localUri || asset.uri)
+        );
+
+        setLocalUri(fileUri);
+      } catch (e) {
+        console.error("Gagal load HTML:", e);
+      }
     };
+
     loadFile();
   }, []);
 
-  if (!localUri) return null; // tunggu file siap
+  if (!localUri) return null;
 
   return (
     <WebView
-      originWhitelist={['*']}
+      originWhitelist={["*"]}
       source={{ uri: localUri }}
-      allowFileAccess={true}
+      allowFileAccess
       mixedContentMode="always"
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
+      javaScriptEnabled
+      domStorageEnabled
       style={{ flex: 1 }}
     />
   );
