@@ -1,8 +1,6 @@
-const { getDefaultConfig } = require("expo/metro-config");
+const { getDefaultConfig } = require('@expo/metro-config');
 
-const defaultConfig = getDefaultConfig(__dirname);
+const config = getDefaultConfig(__dirname);
+config.resolver.assetExts.push('html');
 
-// Tambahin ekstensi yang dianggap asset biasa, bukan modul JS
-defaultConfig.resolver.assetExts.push("js", "css");
-
-module.exports = defaultConfig;
+module.exports = config;
