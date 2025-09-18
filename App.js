@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import * as FileSystem from 'expo-file-system';
-import * as Asset from 'expo-asset';
+import { Asset } from 'expo-asset'; // ✅ perbaikan disini
 
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
@@ -21,6 +21,7 @@ export default function App() {
           require('./assets/web/assets/index-0bddca8e.css'),
           require('./assets/web/assets/index-8a0095ee.js'),
           require('./assets/web/assets/react-35ef61ed.svg'),
+          require('./assets/web/vite.svg'), 
           // tambah semua file yang ada di dist sini
         ];
 
