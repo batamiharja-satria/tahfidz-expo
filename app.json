@@ -16,6 +16,12 @@
     ],
     "android": {
       "package": "com.tahfidz.expo"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adbfb57c-7d83-47a4-abe4-17f9d39e8ff0"
+      }
+    },
+    "owner": "batamiharja-satria"
   }
 }
