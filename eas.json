@@ -1,39 +1,27 @@
 {
-  "cli": {
-    "version": ">= 3.0.0",
-    "appVersionSource": "remote"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
-      "cache": {
-        "disabled": false
+  "expo": {
+    "name": "tahfidz-expo",
+    "slug": "tahfidz-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "assets/**/*"
+    ],
+    "android": {
+      "package": "com.tahfidz.expo",
+      "usesCleartextTraffic": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "adbfb57c-7d83-47a4-abe4-17f9d39e8ff0"
       }
     },
-    "preview": {
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
-      "cache": {
-        "disabled": false
-      }
-    },
-    "production": {
-      "distribution": "store",
-      "android": {
-        "buildType": "app-bundle"
-      },
-      "cache": {
-        "disabled": false
-      }
-    }
-  },
-  "submit": {
-    "production": {}
+    "owner": "batamiharja-satria"
   }
 }
