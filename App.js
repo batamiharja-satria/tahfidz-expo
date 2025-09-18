@@ -5,7 +5,7 @@ export default function App() {
   return (
     <WebView
       originWhitelist={["*"]}
-      source={{ uri: "file:///android_asset/dist/index.html" }}
+      source={{ html: "<h1>Halo dari WebView 🚀</h1>" }}
       style={{ flex: 1 }}
     />
   );
