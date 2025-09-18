@@ -12,18 +12,30 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.tahfidz.expo",
+      "softwareKeyboardLayoutMode": "pan"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "updates": {
+      "enabled": false
+    },
+    "assetBundlePatterns": [
+      "**/*",
+      "assets/dist/*"
+    ],
+    "plugins": [],
+    "platforms": [
+      "android"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2518e8df-fc6d-4f5b-9c24-81afba5d83a2"
+      }
     }
   }
 }
