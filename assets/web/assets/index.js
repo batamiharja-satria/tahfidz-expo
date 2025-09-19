@@ -1,3 +1,6 @@
+
+alert("✅ index.js loaded!");
+
 function sayHello() {
   alert("✅ JS jalan di WebView!");
 }
@@ -7,4 +10,3 @@ window.sayHello = sayHello;
 
 // test biar kelihatan kalau JS ke-load
 document.getElementById("title").style.color = "green";
-console.log("✅ index.js loaded di WebView");
