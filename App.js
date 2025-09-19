@@ -5,10 +5,10 @@ import { Asset } from "expo-asset";
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
 
-  // ✅ trik: require file selain index.html biar kebawa ke bundle
+  // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)
   const distFiles = [
-    require("./assets/web/assets/style.css"),
-    require("./assets/web/assets/index.js"),
+    require("./assets/web/vite.svg"),
+    require("./assets/web/react-35ef61ed.svg"),
   ];
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function App() {
         const indexAsset = Asset.fromModule(require("./assets/web/index.html"));
         await indexAsset.downloadAsync();
 
-        // download juga semua asset lain (css/js)
+        // download juga asset lain biar kebundle
         for (let f of distFiles) {
           const a = Asset.fromModule(f);
           await a.downloadAsync();
