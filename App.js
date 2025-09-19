@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { WebView } from "react-native-webview";
-import StaticServer from "react-native-static-server";
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 
 export default function App() {
   const [url, setUrl] = useState(null);
 
-  // ✅ daftar semua file hasil build vite (biar ke-bundle)
+  // ✅ daftar semua file hasil build (harus sesuai isi dist/)
   const distFiles = [
     require("./assets/web/index.html"),
     require("./assets/web/assets/index.js"),
@@ -15,34 +14,49 @@ export default function App() {
   ];
 
   useEffect(() => {
-    const startServer = async () => {
+    const loadWeb = async () => {
       const targetDir = FileSystem.documentDirectory + "web";
       await FileSystem.makeDirectoryAsync(targetDir, { intermediates: true });
 
-      // ✅ loop semua file, copy ke targetDir
+      // ✅ copy semua file ke targetDir
       for (let f of distFiles) {
         const asset = Asset.fromModule(f);
         await asset.downloadAsync();
 
-        const filename = asset.name; // nama file asli
-        const dest = targetDir + "/" + filename;
+        // nama file asli + extensi
+        const filename = asset.name + "." + asset.type;
 
+        // kalau file dari folder assets → taruh di /assets
+        let destDir = targetDir;
+        if (["js", "css"].includes(asset.type)) {
+          destDir = targetDir + "/assets";
+          await FileSystem.makeDirectoryAsync(destDir, { intermediates: true });
+        }
+
+        const dest = destDir + "/" + filename;
         await FileSystem.copyAsync({
           from: asset.localUri,
           to: dest,
         });
       }
 
-      // ✅ start static server
-      const server = new StaticServer(8080, targetDir, { localOnly: true });
-      const newUrl = await server.start();
-      setUrl(newUrl + "/index.html");
+      // ✅ set URL ke index.html yang udah di-copy
+      setUrl(targetDir + "/index.html");
     };
 
-    startServer();
+    loadWeb();
   }, []);
 
   if (!url) return null;
 
-  return <WebView source={{ uri: url }} style={{ flex: 1 }} />;
+  return (
+    <WebView
+      originWhitelist={["*"]}
+      source={{ uri: url }}
+      javaScriptEnabled={true}
+      domStorageEnabled={true}
+      allowFileAccess={true}
+      style={{ flex: 1 }}
+    />
+  );
 }
