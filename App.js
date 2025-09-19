@@ -6,32 +6,15 @@ export default function App() {
   const [localUri, setLocalUri] = useState(null);
 
   useEffect(() => {
-    const loadDist = async () => {
-      try {
-        // cukup require index.html
-        const indexAsset = Asset.fromModule(require('./assets/web/index.html'));
-        await indexAsset.downloadAsync();
-
-        setLocalUri(indexAsset.localUri || indexAsset.uri);
-      } catch (err) {
-        console.log('❌ Gagal load dist:', err);
-      }
+    const loadHtml = async () => {
+      const indexAsset = Asset.fromModule(require('./assets/web/index.html'));
+      await indexAsset.downloadAsync();
+      setLocalUri(indexAsset.localUri || indexAsset.uri);
     };
-
-    loadDist();
+    loadHtml();
   }, []);
 
   if (!localUri) return null;
 
-  return (
-    <WebView
-      originWhitelist={['*']}
-      source={{ uri: localUri }}
-      allowFileAccess={true}
-      mixedContentMode="always"
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      style={{ flex: 1 }}
-    />
-  );
+  return <WebView source={{ uri: localUri }} style={{ flex: 1 }} />;
 }
