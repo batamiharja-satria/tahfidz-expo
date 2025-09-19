@@ -5,7 +5,9 @@ import { Asset } from "expo-asset";
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
 
-  // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)const distFiles = [
+  // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)
+  
+  const distFiles = [
   require("./assets/web/assets/style.css"),
   require("./assets/web/assets/index.js"),
   require("./assets/web/vite.svg"),
