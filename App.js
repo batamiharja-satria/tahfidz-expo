@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset'; // ✅ perbaikan disini
+import { Asset } from 'expo-asset';
 
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
@@ -9,28 +8,11 @@ export default function App() {
   useEffect(() => {
     const loadDist = async () => {
       try {
-        // index.html wajib di-require manual
+        // cukup require index.html
         const indexAsset = Asset.fromModule(require('./assets/web/index.html'));
         await indexAsset.downloadAsync();
 
-        // ambil path index.html
-        const indexPath = indexAsset.localUri || indexAsset.uri;
-
-        // ✅ triknya: require semua file yang ada di folder assets/ dist
-        const distFiles = [
-          require('./assets/web/assets/index-0bddca8e.css'),
-          require('./assets/web/assets/index-9ed5359e.js'),
-          require('./assets/web/assets/react-35ef61ed.svg'),
-          require('./assets/web/vite.svg'), 
-          // tambah semua file yang ada di dist sini
-        ];
-
-        for (let f of distFiles) {
-          const a = Asset.fromModule(f);
-          await a.downloadAsync(); // pastiin kebundle
-        }
-
-        setLocalUri(indexPath);
+        setLocalUri(indexAsset.localUri || indexAsset.uri);
       } catch (err) {
         console.log('❌ Gagal load dist:', err);
       }
