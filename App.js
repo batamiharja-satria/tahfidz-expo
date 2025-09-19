@@ -19,7 +19,7 @@ export default function App() {
         // ✅ triknya: require semua file yang ada di folder assets/ dist
         const distFiles = [
           require('./assets/web/assets/index-0bddca8e.css'),
-          require('./assets/web/assets/index-8a0095ee.js'),
+          require('./assets/web/assets/index-9ed5359e.js'),
           require('./assets/web/assets/react-35ef61ed.svg'),
           require('./assets/web/vite.svg'), 
           // tambah semua file yang ada di dist sini
