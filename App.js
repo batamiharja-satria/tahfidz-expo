@@ -8,7 +8,7 @@ export default function App() {
   // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)
   const distFiles = [
     require("./assets/web/vite.svg"),
-    require("./assets/web/react-35ef61ed.svg"),
+    require("./assets/web/assets/react-35ef61ed.svg"),
   ];
 
   useEffect(() => {
