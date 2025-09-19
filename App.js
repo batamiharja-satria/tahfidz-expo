@@ -1,47 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { WebView } from "react-native-webview";
+import StaticServer from "react-native-static-server";
+import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 
 export default function App() {
-  const [localUri, setLocalUri] = useState(null);
+  const [url, setUrl] = useState(null);
 
-  // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)
+  // ✅ daftar semua file hasil build vite (biar ke-bundle)
   const distFiles = [
-    require("./assets/web/vite.svg"),
-    require("./assets/web/assets/react-35ef61ed.svg"),
+    require("./assets/web/index.html"),
+    require("./assets/web/assets/index.js"),
+    require("./assets/web/assets/style.css"),
   ];
 
   useEffect(() => {
-    const loadHtml = async () => {
-      try {
-        // wajib require index.html
-        const indexAsset = Asset.fromModule(require("./assets/web/index.html"));
-        await indexAsset.downloadAsync();
+    const startServer = async () => {
+      const targetDir = FileSystem.documentDirectory + "web";
+      await FileSystem.makeDirectoryAsync(targetDir, { intermediates: true });
 
-        // download juga asset lain biar kebundle
-        for (let f of distFiles) {
-          const a = Asset.fromModule(f);
-          await a.downloadAsync();
-        }
+      // ✅ loop semua file, copy ke targetDir
+      for (let f of distFiles) {
+        const asset = Asset.fromModule(f);
+        await asset.downloadAsync();
 
-        setLocalUri(indexAsset.localUri || indexAsset.uri);
-      } catch (err) {
-        console.log("❌ Gagal load dist:", err);
+        const filename = asset.name; // nama file asli
+        const dest = targetDir + "/" + filename;
+
+        await FileSystem.copyAsync({
+          from: asset.localUri,
+          to: dest,
+        });
       }
+
+      // ✅ start static server
+      const server = new StaticServer(8080, targetDir, { localOnly: true });
+      const newUrl = await server.start();
+      setUrl(newUrl + "/index.html");
     };
-    loadHtml();
+
+    startServer();
   }, []);
 
-  if (!localUri) return null;
+  if (!url) return null;
 
-  return (
-    <WebView
-      originWhitelist={["*"]}
-      source={{ uri: localUri }}
-      javaScriptEnabled={true}
-      domStorageEnabled={true}
-      allowFileAccess={true}
-      style={{ flex: 1 }}
-    />
-  );
+  return <WebView source={{ uri: url }} style={{ flex: 1 }} />;
 }
