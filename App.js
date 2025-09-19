@@ -5,29 +5,23 @@ import { Asset } from "expo-asset";
 export default function App() {
   const [localUri, setLocalUri] = useState(null);
 
-  // ✅ Require hanya file yang bisa diproses RN (misalnya image/svg)
   const distFiles = [
-    require("./assets/web/vite.svg"),
-    require("./assets/web/assets/react-35ef61ed.svg"),
+    require("./assets/web/assets/style.css"),
+    require("./assets/web/assets/index.js"),
   ];
 
   useEffect(() => {
     const loadHtml = async () => {
-      try {
-        // wajib require index.html
-        const indexAsset = Asset.fromModule(require("./assets/web/index.html"));
-        await indexAsset.downloadAsync();
+      const indexAsset = Asset.fromModule(require("./assets/web/index.html"));
+      await indexAsset.downloadAsync();
 
-        // download juga asset lain biar kebundle
-        for (let f of distFiles) {
-          const a = Asset.fromModule(f);
-          await a.downloadAsync();
-        }
-
-        setLocalUri(indexAsset.localUri || indexAsset.uri);
-      } catch (err) {
-        console.log("❌ Gagal load dist:", err);
+      // pastiin CSS & JS kebundle
+      for (let f of distFiles) {
+        const a = Asset.fromModule(f);
+        await a.downloadAsync();
       }
+
+      setLocalUri(indexAsset.localUri || indexAsset.uri);
     };
     loadHtml();
   }, []);
