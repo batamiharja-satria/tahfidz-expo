@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>WebView Test</title>
-  <link rel="stylesheet" href="./assets/style.css" />
-</head>
-<body>
-  <h1 id="title">Halo dari WebView 🚀</h1>
-  <button onclick="sayHello()">Klik Aku</button>
-  <script src="./assets/index.js"></script>
-</body>
-</html>
+function sayHello() {
+  alert("✅ JS jalan di WebView!");
+}
+
+// kasih ke window biar bisa dipanggil inline HTML
+window.sayHello = sayHello;
+
+// test biar kelihatan kalau JS ke-load
+document.getElementById("title").style.color = "green";
+console.log("✅ index.js loaded di WebView");
